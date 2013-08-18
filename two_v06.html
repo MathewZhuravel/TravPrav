@@ -1,0 +1,435 @@
+<!doctype html>
+<html ng-app>
+<head>
+	<title>Put your title here</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!--link href="assets/css/two.css" type="text/css" rel="stylesheet" /-->
+
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <!--script src="https://cdn.firebase.com/v0/firebase.js"></script-->
+  <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
+  <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase-simple-login.js'></script>
+
+  
+  <link href='http://fonts.googleapis.com/css?family=Anaheim' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
+  
+  <script src="assets/js/jquery.nanoscroller.min.js"></script>
+  <link rel="stylesheet" href="assets/css/nanoscroller.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+  <link href="assets/css/two.css" type="text/css" rel="stylesheet" />
+
+  <script>
+
+
+      // instatiate the FirebaseSimpleLogin and monitor the user's auth state
+      var dataRef = new Firebase('https://travprav.firebaseIO.com');
+      var auth = new FirebaseSimpleLogin(dataRef, function(error, user) {
+        if (error) {
+          // an error occurred while attempting login
+          alert(error);
+        } else if (user) {
+          // user authenticated with Firebase
+          alert('User ID: ' + user.id + ', Provider: ' + user.provider);
+        } else {
+          // user is logged out
+        }
+      });
+
+      // attempt to log the user in with your preferred authentication provider
+      auth.login('facebook');
+
+
+      var map;
+      var service;
+      var infowindow;
+
+      function log10(val) {
+        return Math.log(val) / Math.LN10;
+      }
+
+      function initialize() {
+        var tokyo = new google.maps.LatLng(35.674956, 139.764633);
+
+        map = new google.maps.Map(document.getElementById('div_Map'), {
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: tokyo,
+            zoom: 15
+          });
+
+        var request = {
+          location: tokyo,
+          radius: '5000',
+          query: 'hotel'
+        };
+
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(request, callback);
+
+        infowindow = new google.maps.InfoWindow();
+
+        $(".nano").nanoScroller();
+
+      }
+
+      /*
+      function LoadCountries()
+      {          
+        $.getJSON('http://api.geonames.org/countryInfoJSON?username=matveyzhuravel', function(data) {
+          var items = [];
+
+          $.each(data.geonames, function(key, val) {
+            items.push('<li id="' + key + '">' + val.countryName + '</li>');
+          });
+          var l_list = document.getElementById('my_list');
+          for (i = 0; i < items.length; i++) {
+            var newList = document.createElement( "li" );
+            newList.innerHTML = items[i];
+            l_list.appendChild(newList);
+          }
+        });
+
+        $(".nano").nanoScroller();
+      }
+      */
+
+      function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            var place = results[i];
+            createMarker(results[i]);
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent('<p font-family: Anaheim, sans-serif> ' + place.name + '<br>Rating: ' + place.rating + '<br><a href="http://kayak.com" class="LinkButton">book it</a><p>');
+          infowindow.open(map, this);
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+      function UpdateSize() {
+        var bodyheight = $(window).height();
+        var bodywidth = $(window).width();
+        var innerheight = bodyheight - $("#div_Header").height() - $("#div_Footer").height();
+        
+        $("#div_Map").height(innerheight);
+        $("#div_Map").width (bodywidth - $("#div_Plan").width());
+        $("#div_Plan").height(innerheight);
+
+        $(".nano").nanoScroller();
+      }
+
+      $(window).resize(function () { 
+        UpdateSize();
+      });
+
+      $(window).ready(function () { 
+        UpdateSize();
+      });
+
+      function PlanCtrl($scope) {
+        
+        $scope.countries = []
+        $scope.cities = []
+
+        $scope.load_countries = function() {
+          if ($scope.countries.length != 0) {
+            var def = new $.Deferred();
+            def.resolve();
+            return def;
+          }
+          return $.getJSON('http://api.geonames.org/countryInfoJSON?username=matveyzhuravel', function(data) {
+            $.each(data.geonames, function(key, val) {
+              $scope.$apply( function() {
+                $scope.countries.push(val);
+              });
+            });
+            $(".nano").nanoScroller();
+          });
+        };
+
+        $scope.load_cities = function(in_country) {
+          $scope.cities = [];
+          
+          return $.getJSON('http://api.geonames.org/citiesJSON?north='+in_country.north+'&south='+in_country.south+'&east='+in_country.east+'&west='+in_country.west+'&maxRows=100&username=matveyzhuravel', function(data) {
+            if (data.geonames == undefined) {
+              return $scope.load_cities(in_country);
+            }
+            $.each(data.geonames, function(key, val) {
+              $scope.$apply( function() {
+                if (in_country.countryCode == val.countrycode) {
+                  $scope.cities.push(val);
+                }
+              });
+            });
+            $(".nano").nanoScroller();
+          });
+        };
+        
+        $scope.itf_get_continents = function() {
+          var arr = []
+          for (var i = 0; i < $scope.countries.length; i++) {
+            var s = $scope.countries[i].continentName;
+            if (-1 == arr.indexOf(s)) {
+              arr.push(s);
+            }
+          }
+          return arr;
+        }
+        
+        $scope.g_cont_name = ""
+        $scope.g_country = ""
+
+        $scope.itf_get_li_class = function(in_name, in_g_name) {
+          if (in_g_name == in_name) {
+            return "li_chosen";
+          }
+          return "li_normal";
+        }
+        $scope.itf_set_cont = function(in_cont_name) {
+          $scope.g_cont_name = in_cont_name;
+          $('#div_add_country').slideDown('fast');
+          // $scope.$apply();
+        }
+        $scope.itf_set_country = function(in_country) {
+          var bounds = new google.maps.LatLngBounds();
+          bounds.extend(new google.maps.LatLng(in_country.north, in_country.east));
+          bounds.extend(new google.maps.LatLng(in_country.south, in_country.west));
+          map.fitBounds(bounds);
+          
+          $scope.g_country = in_country;
+          $scope.itf_show_cities();
+
+          // $scope.$apply();
+        }
+        $scope.itf_set_city = function(in_city) {
+          var bounds = new google.maps.LatLngBounds();
+          bounds.extend(new google.maps.LatLng(in_country.north, in_country.east));
+          bounds.extend(new google.maps.LatLng(in_country.south, in_country.west));
+          map.fitBounds(bounds);
+          
+          $scope.g_country = in_country;
+          $scope.itf_show_cities();
+
+          // $scope.$apply();
+        }
+
+        $scope.itf_get_countries = function(in_CountryName) {
+          var arr = []
+          var re = new RegExp(in_CountryName, 'gi');
+          for (var i = 0; i < $scope.countries.length; i++) {
+            if (    $scope.countries[i].countryName.match(re)
+                && ($scope.countries[i].continentName == $scope.g_cont_name || $scope.g_cont_name == "")) {
+              arr.push($scope.countries[i]);
+            }
+          }
+          return arr;
+        }
+        $scope.itf_get_cities = function(in_CityName) {
+          var arr = []
+          var re = new RegExp(in_CityName, 'gi');
+          for (var i = 0; i < $scope.cities.length; i++) {
+            if (    $scope.cities[i].name.match(re)
+                &&  $scope.cities[i].countrycode == $scope.g_country.countryCode) {
+              arr.push($scope.cities[i]);
+            }
+          }
+          return arr;
+        }
+
+        $scope.GetFontSize = function(country) {
+          if (country.population == null || country.population == 0) {
+            return 5;
+          }
+          return 5 + 2*log10(country.population);
+        }
+
+        $scope.show_continents = function() {
+
+        }
+
+
+        $scope.opts = { 'tightness':{'value':'1', 'options': [ {'name':'Tight schedule',   'value':'0'}
+                                                             , {'name':'Normal',           'value':'1'}
+                                                             , {'name':'Easy going',       'value':'2'}]}
+                      , 'add_place':{'value':'9', 'options': [ {'name':'Continent',        'value':'0'}
+                                                             , {'name':'Country',          'value':'1'}
+                                                             , {'name':'City',             'value':'2'}
+                                                             , {'name':'Language',         'value':'3'}]}
+                      };
+
+
+        $scope.itf_show_cities = function(in_value) {
+          $('#div_loading').appendTo('#div_add_destination').show();
+          $scope.load_cities($scope.g_country).then(
+            function() {
+              $('#div_loading').hide();
+              $('#div_add_city').slideDown('fast');
+            }
+          );
+        }
+        
+        $scope.opts['add_place'].callback = function(in_value) {
+          $scope.g_cont_name = "";
+
+          if ($('#div_add_continent').is(":visible") && in_value != '0') {
+            $('#div_add_continent').hide();
+          }
+          if ($('#div_add_country').is(":visible") && in_value != '1') {
+            $('#div_add_country').hide();
+          }
+          if ($('#div_add_city').is(":visible") && in_value != '1') {
+            $('#div_add_city').hide();
+          }
+          switch (in_value) {
+            case '0': 
+              $('#div_loading').appendTo('#div_add_destination').show();
+              $scope.load_countries().then(function() {
+                $('#div_loading').hide();
+                $('#div_add_continent').slideDown('fast');
+              });
+              break;
+
+            case '1': 
+              $('#div_loading').appendTo('#div_add_destination').show();
+              $scope.load_countries().then(function() {
+                $('#div_loading').hide();
+                $('#div_add_country').slideDown('fast');
+              });
+              break;
+
+            case '2': 
+              $scope.itf_show_cities();
+              break;
+          }                    
+        }
+
+        
+        $scope.opt_get = function(in_opt_name) {
+          $scope.opt_set(in_opt_name, $scope.opts[in_opt_name].value);
+          return $scope.opts[in_opt_name].options;
+        }
+
+        $scope.opt_set = function(in_opt_name, in_value) {
+          $scope.opts[in_opt_name].value = in_value;
+          var n = $scope.opts[in_opt_name].options.length - 1;
+          for (var j = 0; j <= n; j++) {
+            var s = "option_button";
+            if (j == 0) 
+              s += " option_button_first";
+            if (j == n) 
+              s += " option_button_last";
+            if ($scope.opts[in_opt_name].options[j].value == $scope.opts[in_opt_name].value) 
+              s += " option_button_choosen";
+
+            $scope.opts[in_opt_name].options[j].style = s;
+          }
+        }
+
+        $scope.opt_click = function(in_opt_name, in_value) {
+          $scope.opt_set(in_opt_name, in_value);
+          $scope.opts[in_opt_name].callback(in_value);
+        }
+
+
+      }
+
+  </script>
+
+
+</head>
+<body>
+<div id="fb-root"></div>
+
+  <div id="div_loading" style="display:none;text-align:center;padding:5px">
+    <img src="http://img.cdn.tl/loading1.gif">
+  </div>
+
+  <div>
+		<div id="div_Header" class="Header">
+      Headr!!
+		</div>
+  	<div id="div_Plan" class="Plan nano has-scrollbar">
+    	<div class="content" ng-controller="PlanCtrl">
+			  Here the data!!
+        <br>
+        <div id="div_settings" class="selector">
+          <a ng-repeat="opt in opt_get('tightness')" href="" class="{{opt.style}}" ng-click="opt_set('tightness', opt.value)">
+            {{opt.name}}
+          </a>
+        </div>
+        <br>
+        <div id="div_add_destination" class="selector">
+          <div>
+            Add a destination: 
+              <a ng-repeat="opt in opt_get('add_place')" href="" class="{{opt.style}}" ng-click="opt_click('add_place', opt.value)">
+                {{opt.name}}
+              </a>
+          </div>  
+          <div style="height=100%">
+
+          <div style="overflow:auto;">
+
+            <div id="div_add_continent" style="display:none;posision:relative;float:left;width:120px;" class="!sel_cont"> 
+              <a  href="" 
+                  ng-repeat="cont_name in itf_get_continents()" 
+                  ng-click="itf_set_cont(cont_name)" 
+                  class="{{itf_get_li_class(cont_name, g_cont_name)}}">
+                {{cont_name}}<br>
+              </a>
+            </div>
+
+            <div id="div_add_country" style="display:none;posision:relative;float:left;width:170px;" class="!sel_cntry"> 
+              <input type="text" ng-model="in_CountryName" placeholder="Country name...">
+              <div class="!content" style="max-height:300px;overflow:auto;">
+                <a  href="" 
+                    ng-repeat="country in itf_get_countries(in_CountryName)" 
+                    ng-click="itf_set_country(country)"
+                    class="{{itf_get_li_class(country.countryName, g_country.countryName)}}">
+                  {{country.countryName}}<br>
+                </a>
+              </div>
+            </div>
+
+            <div id="div_add_city" style="display:none;posision:relative;float:left;width:150px;" class="!sel_cntry"> 
+              <input type="text" ng-model="in_CityName" placeholder="City name...">
+              <div style="max-height:300px;overflow:auto;">
+                <a  href="" 
+                    ng-repeat="city in itf_get_cities(in_CityName)" 
+                    ng-click="itf_set_city(country)"
+                    class="{{itf_get_li_class(city.name, g_city.name)}}">
+                  {{city.name}}<br>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          </div>
+        </div>
+
+      </div>
+		</div>
+		<div class="Map">
+      <div id="div_Map" style="width: 100px; height: 100px;"></div> 
+		</div>
+		<div id="div_Footer" class="Footer">
+      Copywright (c) 2013
+		</div>
+	</div>
+
+</body>
+</html>

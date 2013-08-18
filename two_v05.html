@@ -1,0 +1,251 @@
+<!doctype html>
+<html ng-app>
+<head>
+	<title>Put your title here</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!--link href="assets/css/two.css" type="text/css" rel="stylesheet" /-->
+
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  
+  <link href='http://fonts.googleapis.com/css?family=Anaheim' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
+  
+  <script src="assets/js/jquery.nanoscroller.min.js"></script>
+  <link rel="stylesheet" href="assets/css/nanoscroller.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+  <link href="assets/css/two.css" type="text/css" rel="stylesheet" />
+
+  <script>
+
+      var map;
+      var service;
+      var infowindow;
+
+      function log10(val) {
+        return Math.log(val) / Math.LN10;
+      }
+
+      function initialize() {
+        var tokyo = new google.maps.LatLng(35.674956, 139.764633);
+
+        map = new google.maps.Map(document.getElementById('div_Map'), {
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: tokyo,
+            zoom: 15
+          });
+
+        var request = {
+          location: tokyo,
+          radius: '5000',
+          query: 'hotel'
+        };
+
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(request, callback);
+
+        infowindow = new google.maps.InfoWindow();
+
+        $(".nano").nanoScroller();
+
+      }
+
+      /*
+      function LoadCountries()
+      {          
+        $.getJSON('http://api.geonames.org/countryInfoJSON?username=matveyzhuravel', function(data) {
+          var items = [];
+
+          $.each(data.geonames, function(key, val) {
+            items.push('<li id="' + key + '">' + val.countryName + '</li>');
+          });
+          var l_list = document.getElementById('my_list');
+          for (i = 0; i < items.length; i++) {
+            var newList = document.createElement( "li" );
+            newList.innerHTML = items[i];
+            l_list.appendChild(newList);
+          }
+        });
+
+        $(".nano").nanoScroller();
+      }
+      */
+
+      function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            var place = results[i];
+            createMarker(results[i]);
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent('<p font-family: Anaheim, sans-serif> ' + place.name + '<br>Rating: ' + place.rating + '<br><a href="http://kayak.com" class="LinkButton">book it</a><p>');
+          infowindow.open(map, this);
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+      function UpdateSize() {
+        var bodyheight = $(window).height();
+        var bodywidth = $(window).width();
+        var innerheight = bodyheight - $("#div_Header").height() - $("#div_Footer").height();
+        
+        $("#div_Map").height(innerheight);
+        $("#div_Map").width (bodywidth - $("#div_Plan").width());
+        $("#div_Plan").height(innerheight);
+
+        $(".nano").nanoScroller();
+      }
+
+      $(window).resize(function () { 
+        UpdateSize();
+      });
+
+      $(window).ready(function () { 
+        UpdateSize();
+      });
+
+      function PlanCtrl($scope) {
+        $scope.countries = []
+
+        $scope.LoadCountries = function() {
+          $.getJSON('http://api.geonames.org/countryInfoJSON?username=matveyzhuravel', function(data) {
+            $.each(data.geonames, function(key, val) {
+              $scope.$apply( function() {
+                $scope.countries.push(val);
+              });
+            });
+          });
+          $(".nano").nanoScroller();
+        };
+        $scope.GetCountryList = function(in_CountryName) {
+          var arr = []
+          var re = new RegExp(in_CountryName, 'gi');
+          for (var i = 0; i < $scope.countries.length; i++) {
+            if ($scope.countries[i].countryName.match(re)) {
+              arr.push($scope.countries[i]);
+            }
+          }
+          return arr;
+        }
+        $scope.ShowCountry = function(country) {
+          var bounds = new google.maps.LatLngBounds();
+          bounds.extend(new google.maps.LatLng(country.north, country.east));
+          bounds.extend(new google.maps.LatLng(country.south, country.west));
+          map.fitBounds(bounds);
+        }
+        $scope.GetFontSize = function(country) {
+          if (country.population == null || country.population == 0) {
+            return 5;
+          }
+          return 5 + 2*log10(country.population);
+        }
+
+
+        $scope.opts = [ {'name':'tightness',  'value':'1', 'options': [ {'name':'Tight schedule',   'value':'0'}
+                                                                      , {'name':'Normal',           'value':'1'}
+                                                                      , {'name':'Easy going',       'value':'2'}] }
+                      , {'name':'add_place',  'value':'9', 'options': [ {'name':'Continent',        'value':'0'}
+                                                                      , {'name':'Country',          'value':'1'}
+                                                                      , {'name':'City',             'value':'2'}
+                                                                      , {'name':'Language',         'value':'3'}] }
+                      ];
+        
+        $scope.opt_get = function(in_opt_name) {
+
+          for (var i = 0; i < $scope.opts.length; i++) {
+            if ($scope.opts[i].name = in_opt_name) {
+              $scope.opt_set(in_opt_name, $scope.opts[i].value);
+              return $scope.opts[i].options;
+            }
+          }
+        }
+
+        $scope.opt_set = function(in_opt_name, in_value) {
+          for (var i = 0; i < $scope.opts.length; i++) {
+            if ($scope.opts[i].name = in_opt_name) {
+
+              $scope.opts[i].value = in_value;
+
+              var n = $scope.opts[i].options.length - 1;
+
+              for (var j = 0; j <= n; j++) {
+                var s = "option_button";
+                if (j == 0) 
+                  s += " option_button_first";
+                if (j == n) 
+                  s += " option_button_last";
+                if ($scope.opts[i].options[j].value == $scope.opts[i].value) 
+                  s += " option_button_choosen";
+
+                $scope.opts[i].options[j].style = s;
+              }
+            }
+          }
+        }
+
+
+      }
+
+  </script>
+
+
+</head>
+<body>
+
+  <div>
+		<div id="div_Header" class="Header">
+      Headr!!
+		</div>
+  	<div id="div_Plan" class="Plan nano has-scrollbar">
+    	<div class="content" ng-controller="PlanCtrl">
+			  Here the data!!
+        <br>
+        <a ng-repeat="opt in opt_get('tightness')" href="" class="{{opt.style}}" ng-click="opt_set('tightness', opt.value)">
+          {{opt.name}}
+        </a>
+        <br>
+        <a ng-repeat="opt in opt_get('add_place')" href="" class="{{opt.style}}" ng-click="opt_set('add_place', opt.value)">
+          {{opt.name}}
+        </a>
+
+        <div class="nano has-scrollbar" style="width: 400px;">
+          <div class="content">
+            <input type="text" ng-model="in_CountryName" placeholder="Start typing country name...">
+            <div style="width: 100%" ng-repeat="country in GetCountryList(in_CountryName)">
+              <a href="" ng-click="ShowCountry(country)" style="font-family: 'Monda'; font-size: {{GetFontSize(country)}}px">
+                {{country.countryName}}
+              </a>
+              <div style="float: right;">
+                <a href="" ng-click="ShowCountry(country)">
+                  <img src="https://cdn1.iconfinder.com/data/icons/fatcow/16x16/map_magnify.png"/>
+                </a>
+              </div>
+            </div>
+            <a href="" class="LinkButton" ng-click="LoadCountries()">Get countries</a>
+          </div>
+        </div>
+      </div>
+		</div>
+		<div class="Map">
+      <div id="div_Map" style="width: 100px; height: 100px;"></div> 
+		</div>
+		<div id="div_Footer" class="Footer">
+      Copywright (c) 2013
+		</div>
+	</div>
+
+</body>
+</html>

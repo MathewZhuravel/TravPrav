@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>Google map test</title>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<style type="text/css">
+html,body {
+ margin:0;
+ padding:0;
+ height:100%; /* needed for container min-height */
+ background:fff;
+
+ font-family:arial,sans-serif;
+ font-size:small;
+ color:#666;
+}
+
+h1 { 
+ font:1.5em georgia,serif; 
+ margin:0.5em 0;
+}
+
+h2 {
+ font:1.25em georgia,serif; 
+ margin:0 0 0.5em;
+}
+
+div#container {
+background:none repeat scroll 0 0 #FFFFFF;
+border-left:1px solid #CCCCCC;
+border-right:1px solid #CCCCCC;
+height:100%;
+margin:0 auto;
+min-height:100%;
+overflow:hidden;
+position:relative;
+width:960px;
+
+ /*height:auto !important;  real browsers */
+ height:100%; /* IE6: treaded as min-height*/
+
+ min-height:100%; /* real browsers */
+}
+
+
+div#header {
+ border-bottom:1px solid #ccc;
+ border-left:1em solid #ccc;
+ height:108px;
+ position:relative;
+}
+ div#header h1 
+ {
+     position:absolute;
+     bottom: 0;
+     left:0.5em;
+ }
+div#header2
+{
+ border-bottom:1px solid #ccc;
+ border-left:1em solid #999;
+    height: 40px;
+    position: relative;
+}
+ div#header2 p 
+ {
+     position:absolute;
+     bottom: 0;
+     left:0.5em;
+ }
+div#headerInternal
+{
+ border-bottom:1px solid #ccc;
+ border-left:1em solid #cc3300;
+    height: 40px;
+    position: relative;
+}
+ div#headerInternal p 
+ {
+     position:absolute;
+     bottom: 0;
+     left:0.5em;
+ }
+
+div#headerInternal2
+{
+    height: 40px;
+    position: relative;
+}
+ div#headerInternal2 p 
+ {
+     position:absolute;
+     bottom: 0;
+     left:0.5em;
+ }
+
+
+div#rightCol 
+{
+    float:right;
+    width:29%;
+ padding-bottom:5em; /* bottom padding for footer */
+}
+
+div#content{
+
+border-right:1px solid #CCCCCC;
+bottom:0;
+float:left;
+overflow:hidden;
+padding-bottom:108px;
+margin-top:148px;
+position:absolute;
+top:0;
+width:70%;
+
+}
+ div#content p {
+ }
+
+div#footer {
+    position:absolute;
+ clear:both;
+ width:100%;
+ height:40px;
+ bottom:0; /* stick to bottom */
+ background:#fff;
+ border-top:1px solid #ccc;
+}
+ div#footer p {
+  padding:1em;
+  margin:0;
+ }
+
+.paddedContent 
+{
+    height:100%;
+    margin: 1em;
+}
+</style> 
+
+<script type="text/javascript">
+function initialize() {
+    var latlng = new google.maps.LatLng(52.397, 1.644);
+    var myOptions = {
+        zoom: 8,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+}
+
+</script>
+</head>
+
+<body onload="initialize()">
+    <div id="container"> 
+    <div id="header"> 
+        <h1>Title here...</h1> 
+    </div> 
+    <div id="header2"> 
+        <p>Secondary menu...</p>
+    </div> 
+
+    <div id="rightCol">
+        <div id="headerInternal2"> 
+            <p>Right Header</p>
+        </div> 
+        <p class="paddedContent">This is the right column</p>
+    </div>
+    <div id="content"> 
+        <div id="headerInternal"> 
+            <p>Page Context Menu</p>
+        </div> 
+        <div class="paddedContent">
+            <div id="map_canvas" style="width: 100%; height: 100%;"></div> 
+        </div>
+
+    </div> 
+
+        <div id="footer"> 
+            <p>This footer is absolutely positioned</p> 
+        </div> 
+</div> 
+</body>
+</html>

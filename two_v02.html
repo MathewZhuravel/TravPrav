@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+	<title>Put your title here</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="assets/css/two.css" type="text/css" rel="stylesheet" />
+
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Anaheim' rel='stylesheet' type='text/css'>
+
+  <script src="assets/js/jquery.nanoscroller.min.js"></script>
+  <link rel="stylesheet" href="assets/css/nanoscroller.css">
+
+  <script>
+
+      var map;
+      var service;
+      var infowindow;
+
+      function initialize() {
+        var tokyo = new google.maps.LatLng(35.674956, 139.764633);
+
+        map = new google.maps.Map(document.getElementById('map-canvas'), {
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: tokyo,
+            zoom: 15
+          });
+
+        var request = {
+          location: tokyo,
+          radius: '5000',
+          query: 'hotel'
+        };
+
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(request, callback);
+
+        infowindow = new google.maps.InfoWindow();
+
+        $(".nano").nanoScroller();
+
+      }
+
+      function LoadCountries()
+      {          
+        $.getJSON('http://api.geonames.org/countryInfoJSON?username=matveyzhuravel', function(data) {
+          var items = [];
+
+          $.each(data.geonames, function(key, val) {
+            items.push('<li id="' + key + '">' + val.countryName + '</li>');
+          });
+          var l_list = document.getElementById('my_list');
+          for (i = 0; i < items.length; i++) {
+            var newList = document.createElement( "li" );
+            newList.innerHTML = items[i];
+            l_list.appendChild(newList);
+          }
+        });
+
+      }
+
+      function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            var place = results[i];
+            createMarker(results[i]);
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent('<p font-family: Anaheim, sans-serif> ' + place.name + '<br>Rating: ' + place.rating + '<br><a href="http://kayak.com" class="classname">book it</a><p>');
+          infowindow.open(map, this);
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+  </script>
+
+
+</head>
+<body>
+	<div class="content">
+		<div class="top_block Header">
+      Headr!!
+		</div>
+		<div class="Plan">
+			Here the data!!
+      <div class="nano has-scrollbar" style="overflow: auto;">
+        <ul id="my_list">
+        </ul>
+        <a href="javascript:void(0);" class="LinkButton" onclick="LoadCountries();">Get countries</a>
+      </div>
+		</div>
+		<div class="Map">
+      <!--div id="map-canvas" style="width: 500px; height: 500px;"></div--> 
+      <div id="map-canvas" style="width: 500px; height: 500px;"></div> 
+		</div>
+		<div class="bottom_block Footer">
+      Copywright (c) 2013
+		</div>
+	</div>
+</body>
+</html>

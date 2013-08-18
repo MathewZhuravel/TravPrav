@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body { padding-top: 60px; /* 60px to make the container go all the way
+      to the bottom of the topbar */ }
+    </style>
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+      </script>
+    <![endif]-->
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+    <style>
+      html, body, #map-canvas {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+      }
+
+      div#headerInternal
+      {
+        border-bottom:1px solid #ccc;
+        border-left:1em solid #cc3300;
+        height: 40px;
+        position: relative;
+      }
+      div#headerInternal p 
+      {
+        position:absolute;
+        bottom: 0;
+        left:0.5em;
+      }
+      div#content
+      {
+        border-right:1px solid #CCCCCC;
+        bottom:0;
+        float:left;
+        overflow:hidden;
+        padding-bottom:108px;
+        margin-top:148px;
+        position:absolute;
+        top:0;
+        width:70%;
+      }
+      div#content p 
+      {
+      }
+      .paddedContent 
+      {
+        height:100%;
+        margin: 1em;
+      }
+
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+    <script>
+        
+        /*
+        var map;
+
+        function initialize() {
+            var mapOptions = {
+                zoom: 8,
+                center: new google.maps.LatLng(35.674956, 139.764633),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+        */
+
+        var map;
+        var service;
+        var infowindow;
+
+        function initialize() {
+          var tokyo = new google.maps.LatLng(35.674956, 139.764633);
+
+          map = new google.maps.Map(document.getElementById('map-canvas'), {
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              center: tokyo,
+              zoom: 15
+            });
+
+          var request = {
+            location: tokyo,
+            radius: '5000',
+            query: 'hotel'
+          };
+
+          service = new google.maps.places.PlacesService(map);
+          service.textSearch(request, callback);
+
+          infowindow = new google.maps.InfoWindow();
+        }
+
+        function callback(results, status) {
+          if (status == google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+              var place = results[i];
+              createMarker(results[i]);
+            }
+          }
+        }
+
+        function createMarker(place) {
+          var placeLoc = place.geometry.location;
+          var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location
+          });
+
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent(place.name + '<br>Rating: ' + place.rating + '<br>' + place.formatted_address + '<br>' + place.vicinity);
+            infowindow.open(map, this);
+          });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Project name</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <h1>Bootstrap starter template</h1>
+      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+
+    </div> <!-- /container -->
+    
+
+    <div>
+  		Some interesting content
+      
+      End of some content
+  	</div>
+
+
+    <div id="content"> 
+        <div id="headerInternal"> 
+            <p>Page Context Menu</p>
+        </div> 
+        <div class="paddedContent">
+            <div id="map-canvas" style="width: 100%; height: 100%;"></div> 
+        </div>
+
+    </div> 
+
+
+    <style>
+      
+      /* To push content below navbar */
+      @media (min-width: 980px) {
+        body {
+          margin-top: 41px;
+        }
+      }
+      
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      
+      @media (max-width: 980px) {
+        /* Enable use of floated navbar text */
+        .navbar-text.pull-right {
+          float: none;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+      
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+    </script>
+    <script src="assets/js/bootstrap.js">
+    </script>
+    <script>
+
+    </script>
+  </body>
+</html>
