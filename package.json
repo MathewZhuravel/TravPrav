@@ -1,0 +1,27 @@
+{
+  "name": "node-js-sample",
+  "version": "0.0.1",
+  "description": "a sample node.js clone app for heroku",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "2.5.x"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MathewZhuravel/TravPrav"
+  },
+  "keywords": [
+    "node",
+    "heroku"
+  ],
+  "author": "Matvey Zhuravel",
+  "license": "BSD",
+  "gitHead": ""
+}
