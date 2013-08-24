@@ -37,6 +37,12 @@
         });
       }
 
+      $(document).ajaxComplete( function() {
+        try {
+         setTimeout(FB.XFBML.parse);
+        } catch(ex) {}
+      });
+
       var map;
       var service;
       var infowindow;
