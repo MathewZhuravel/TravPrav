@@ -1,13 +1,12 @@
 <!doctype html>
 <html ng-app>
 <head>
-	<title>Put your title here</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<!--link href="assets/css/two.css" type="text/css" rel="stylesheet" /-->
+  <title>Put your title here</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <!--script src="https://cdn.firebase.com/v0/firebase.js"></script-->
+
   <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
   <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase-simple-login.js'></script>
 
@@ -20,16 +19,14 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 
-  <link href="assets/css/two.css" type="text/css" rel="stylesheet" />
-
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
 
+  <link href="assets/css/two.css" type="text/css" rel="stylesheet" />
+
   <script>
-
-
-      // instatiate the FirebaseSimpleLogin and monitor the user's auth state
+      /* instatiate the FirebaseSimpleLogin and monitor the user's auth state */
       var dataRef = new Firebase('https://travprav.firebaseIO.com');
       var auth = new FirebaseSimpleLogin(dataRef, function(error, user) {
         if (error) {
@@ -43,8 +40,19 @@
         }
       });
 
-      // attempt to log the user in with your preferred authentication provider
+      /* attempt to log the user in with your preferred authentication provider */
       auth.login('facebook');
+
+			
+			function init_boot() {
+        $('#collapseDiv').on('hide.bs.collapse', function () {
+           $('#accordion').removeClass("shad");
+        });
+
+        $('#collapseDiv').on('show.bs.collapse', function () {
+          $('#accordion').addClass("shad");
+        });
+      }
 
       var map;
       var service;
@@ -77,27 +85,6 @@
         $(".nano").nanoScroller();
 
       }
-
-      /*
-      function LoadCountries()
-      {          
-        $.getJSON('http://api.geonames.org/countryInfoJSON?username=matveyzhuravel', function(data) {
-          var items = [];
-
-          $.each(data.geonames, function(key, val) {
-            items.push('<li id="' + key + '">' + val.countryName + '</li>');
-          });
-          var l_list = document.getElementById('my_list');
-          for (i = 0; i < items.length; i++) {
-            var newList = document.createElement( "li" );
-            newList.innerHTML = items[i];
-            l_list.appendChild(newList);
-          }
-        });
-
-        $(".nano").nanoScroller();
-      }
-      */
 
       function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -205,7 +192,7 @@
         $scope.itf_set_cont = function(in_cont_name) {
           $scope.g_cont_name = in_cont_name;
           $('#div_add_country').slideDown('fast');
-          // $scope.$apply();
+          /* $scope.$apply(); */
         }
         $scope.itf_set_country = function(in_country) {
           var bounds = new google.maps.LatLngBounds();
@@ -216,7 +203,7 @@
           $scope.g_country = in_country;
           $scope.itf_show_cities();
 
-          // $scope.$apply();
+          /* $scope.$apply(); */
         }
         $scope.itf_set_city = function(in_city) {
           var bounds = new google.maps.LatLngBounds();
@@ -227,7 +214,7 @@
           $scope.g_country = in_country;
           $scope.itf_show_cities();
 
-          // $scope.$apply();
+          /* $scope.$apply(); */
         }
 
         $scope.itf_get_countries = function(in_CountryName) {
@@ -356,19 +343,82 @@
 
 </head>
 <body>
-<div id="fb-root"></div>
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function() {
+      // init the FB JS SDK
+      FB.init({
+        appId      : '458434754263383',                         // App ID from the app dashboard
+        channelUrl : '//travprav-s.herokuapp.com/channel.html', // Channel file for x-domain comms
+        status     : true,                                      // Check Facebook Login status
+        cookie     : true,                                      // enable cookies to allow the server to access the session
+        xfbml      : true                                       // Look for social plugins on the page
+      });
+
+      // Here we subscribe to the auth.authResponseChange JavaScript event. This event is fired
+      // for any authentication related change, such as login, logout or session refresh. This means that
+      // whenever someone who was previously logged out tries to log in again, the correct case below 
+      // will be handled. 
+
+      FB.Event.subscribe('auth.authResponseChange', function(response) {
+        // Here we specify what we do with the response anytime this event occurs. 
+        if (response.status === 'connected') {
+          // The response object is returned with a status field that lets the app know the current
+          // login status of the person. In this case, we're handling the situation where they 
+          // have logged in to the app.
+          testAPI();
+        } else if (response.status === 'not_authorized') {
+          // In this case, the person is logged into Facebook, but not into the app, so we call
+          // FB.login() to prompt them to do so. 
+          // In real-life usage, you wouldn't want to immediately prompt someone to login 
+          // like this, for two reasons:
+          // (1) JavaScript created popup windows are blocked by most browsers unless they 
+          // result from direct interaction from people using the app (such as a mouse click)
+          // (2) it is a bad experience to be continually prompted to login upon page load.
+          FB.login();
+        } else {
+          // In this case, the person is not logged into Facebook, so we call the login() 
+          // function to prompt them to do so. Note that at this stage there is no indication
+          // of whether they are logged into the app. If they aren't then they'll see the Login
+          // dialog right after they log in to Facebook. 
+          // The same caveats as above apply to the FB.login() call here.
+          FB.login();
+        }
+      });
+    };
+
+    /* Load the SDK asynchronously */
+    (function(d, s, id) {
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/all.js";
+       fjs.parentNode.insertBefore(js, fjs);
+    } (document, 'script', 'facebook-jssdk'));
+
+    // Here we run a very simple test of the Graph API after login is successful. 
+    // This testAPI() function is only called in those cases. 
+    function testAPI() {
+      console.log('Welcome! Fetching your information...');
+      FB.api('/me', function(response) {
+        console.log('Good to see you, ' + response.name + '.');
+      });
+    }
+
+  </script>
 
   <div id="div_loading" style="display:none;text-align:center;padding:5px">
     <img src="http://img.cdn.tl/loading1.gif">
   </div>
 
   <div>
-		<div id="div_Header" class="Header">
+  <div id="div_Header" class="Header">
       Headr!!
-		</div>
-  	<div id="div_Plan" class="Plan nano has-scrollbar">
-    	<div class="content" ng-controller="PlanCtrl">
-			  Here the data!!
+      <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>
+  </div>
+   <div id="div_Plan" class="Plan nano has-scrollbar">
+     <div class="content" ng-controller="PlanCtrl">
+     Here the data!!
         <br>
         <div id="div_settings" class="selector">
           <a ng-repeat="opt in opt_get('tightness')" href="" class="{{opt.style}}" ng-click="opt_set('tightness', opt.value)">
@@ -451,27 +501,19 @@
         </div>
 
 
-        <script>
-          $('#collapseDiv').on('hide.bs.collapse', function () {
-             $('#accordion').removeClass("shad");
-          });
-
-          $('#collapseDiv').on('show.bs.collapse', function () {
-            $('#accordion').addClass("shad");
-          });
-        </script>
+        <script> init_boot(); </script>
 
 
       
       </div>
-		</div>
-		<div class="Map">
+  </div>
+  <div class="Map">
       <div id="div_Map" style="width: 100px; height: 100px;"></div> 
-		</div>
-		<div id="div_Footer" class="Footer">
+  </div>
+  <div id="div_Footer" class="Footer">
       Copywright (c) 2013
-		</div>
-	</div>
+  </div>
+ </div>
 
 </body>
 </html>
