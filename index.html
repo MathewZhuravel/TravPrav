@@ -7,10 +7,6 @@
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-  <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
-  <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase-simple-login.js'></script>
-
-  
   <link href='http://fonts.googleapis.com/css?family=Anaheim' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
   
@@ -26,24 +22,7 @@
   <link rel="stylesheet" href="assets/css/nanoscroller.css">
 
   <script>
-      /* instatiate the FirebaseSimpleLogin and monitor the user's auth state */
-      var dataRef = new Firebase('https://travprav.firebaseIO.com');
-      var auth = new FirebaseSimpleLogin(dataRef, function(error, user) {
-        if (error) {
-          // an error occurred while attempting login
-          alert(error);
-        } else if (user) {
-          // user authenticated with Firebase
-          alert('User ID: ' + user.id + ', Provider: ' + user.provider);
-        } else {
-          // user is logged out
-        }
-      });
-
-      /* attempt to log the user in with your preferred authentication provider */
-      auth.login('facebook');
-
-			
+		
 			function init_boot() {
         $('#collapseDiv').on('hide.bs.collapse', function () {
            $('#accordion').removeClass("shad");
