@@ -25,11 +25,14 @@
 			function init_boot() {
         $('#collapseDiv').on('hide.bs.collapse', function () {
            $('#accordion').removeClass("shad");
+        });
+        $('#collapseDiv').on('hidden.bs.collapse', function () {
            $(".nano").nanoScroller();
         });
-
         $('#collapseDiv').on('show.bs.collapse', function () {
           $('#accordion').addClass("shad");
+        });
+        $('#collapseDiv').on('shown.bs.collapse', function () {
           $(".nano").nanoScroller();
         });
       }
