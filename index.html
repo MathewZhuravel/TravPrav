@@ -395,9 +395,10 @@
       Headr!!
       <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>
   </div>
-   <div id="div_Plan" class="Plan nano has-scrollbar">
-     <div class="content" ng-controller="PlanCtrl">
-     Here the data!!
+  <div class="Plan">
+    <div id="div_Plan" class="nano has-scrollbar">
+      <div class="content" ng-controller="PlanCtrl">
+      Here the data!!
         <br>
         <div id="div_settings" class="selector">
           <a ng-repeat="opt in opt_get('tightness')" href="" class="{{opt.style}}" ng-click="opt_set('tightness', opt.value)">
@@ -485,6 +486,7 @@
 
       
       </div>
+    </div>
   </div>
   <div class="Map">
       <div id="div_Map" style="width: 100px; height: 100px;"></div> 
