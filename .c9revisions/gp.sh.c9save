@@ -1,0 +1,3 @@
+{"ts":1377796431582,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1377796549234,"patch":[[{"diffs":[[1,"#!/bin/sh\r\ngit add .                                                                                                             \r\ngit commit -m $1\r\ngit push -u origin develop"]],"start1":0,"start2":0,"length1":0,"length2":175}]],"length":175,"saved":false}
+{"ts":1377796639383,"patch":[[{"diffs":[[0,"dd ."],[-1,"                                                                                                             "],[0,"\r\ngi"]],"start1":16,"start2":16,"length1":117,"length2":8}]],"length":66,"saved":false}
