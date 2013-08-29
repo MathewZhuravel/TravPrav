@@ -393,6 +393,7 @@
       FB.api('/me', function(response) {
         console.log('Good to see you, ' + response.name + '.');
         $('#div_Login').hide();
+        $('#img_User').show();
         $('#img_User').attr('src', '//graph.facebook.com/' + response.id + '/picture');
         $('#a_User').attr('href', response.link);
         $('#div_User').show();
