@@ -351,7 +351,6 @@
           // login status of the person. In this case, we're handling the situation where they 
           // have logged in to the app.
           testAPI();
-          alert('hi!');
         } else if (response.status === 'not_authorized') {
           // In this case, the person is logged into Facebook, but not into the app, so we call
           // FB.login() to prompt them to do so. 
@@ -393,6 +392,9 @@
       console.log('Welcome! Fetching your information...');
       FB.api('/me', function(response) {
         console.log('Good to see you, ' + response.name + '.');
+        $('#img_User').src = '//graph.facebook.com/' + response.id + '/picture';
+        $('#div_Login').hide();
+        $('#div_User').show();
       });
     }
 
@@ -444,8 +446,13 @@
   <div>
   <div id="div_Header" class="Header">
       Headr!!
-      <div id="div_Login" style="float:right;">
-      	<fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>
+      <div style="float:right;">
+        <div id="div_Login">
+      	  <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>
+      	</div>
+      	<div id="div_User">
+      	  <img id="img_User" src="">
+      	</div>
       </div>
   </div>
   <div class="Plan">
