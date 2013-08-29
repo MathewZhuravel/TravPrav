@@ -392,8 +392,9 @@
       console.log('Welcome! Fetching your information...');
       FB.api('/me', function(response) {
         console.log('Good to see you, ' + response.name + '.');
-        $('#img_User').attr('src', '//graph.facebook.com/' + response.id + '/picture');
         $('#div_Login').hide();
+        $('#img_User').attr('src', '//graph.facebook.com/' + response.id + '/picture');
+        $('#a_User').attr('href', response.link);
         $('#div_User').show();
       });
     }
@@ -451,7 +452,7 @@
       	  <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>
       	</div>
       	<div id="div_User">
-      	  <img id="img_User" src="" width="20" height="20">
+      	  <a id="a_User" href=""><img id="img_User" style="display:none;" src="" width="30" height="30"></a>
       	</div>
       </div>
   </div>
