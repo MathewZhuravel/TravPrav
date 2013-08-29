@@ -115,11 +115,11 @@
 
       function PlanCtrl($scope) {
         
-        $scope.countries = []
-        $scope.cities = []
+        $scope.countries = [];
+        $scope.cities = [];
 
         $scope.load_countries = function() {
-          if ($scope.countries.length != 0) {
+          if ($scope.countries.length !== 0) {
             var def = new $.Deferred();
             def.resolve();
             return def;
@@ -138,7 +138,7 @@
           $scope.cities = [];
           
           return $.getJSON('http://api.geonames.org/citiesJSON?north='+in_country.north+'&south='+in_country.south+'&east='+in_country.east+'&west='+in_country.west+'&maxRows=100&username=matveyzhuravel', function(data) {
-            if (data.geonames == undefined) {
+            if (data.geonames === undefined) {
               return $scope.load_cities(in_country);
             }
             $.each(data.geonames, function(key, val) {
@@ -153,7 +153,7 @@
         };
         
         $scope.itf_get_continents = function() {
-          var arr = []
+          var arr = [];
           for (var i = 0; i < $scope.countries.length; i++) {
             var s = $scope.countries[i].continentName;
             if (-1 == arr.indexOf(s)) {
@@ -161,22 +161,22 @@
             }
           }
           return arr;
-        }
+        };
         
-        $scope.g_cont_name = ""
-        $scope.g_country = ""
+        $scope.g_cont_name = "";
+        $scope.g_country = "";
 
         $scope.itf_get_li_class = function(in_name, in_g_name) {
           if (in_g_name == in_name) {
             return "li_chosen";
           }
           return "li_normal";
-        }
+        };
         $scope.itf_set_cont = function(in_cont_name) {
           $scope.g_cont_name = in_cont_name;
           $('#div_add_country').slideDown('fast');
           /* $scope.$apply(); */
-        }
+        };
         $scope.itf_set_country = function(in_country) {
           var bounds = new google.maps.LatLngBounds();
           bounds.extend(new google.maps.LatLng(in_country.north, in_country.east));
@@ -187,7 +187,7 @@
           $scope.itf_show_cities();
 
           /* $scope.$apply(); */
-        }
+        };
         $scope.itf_set_city = function(in_city) {
           var bounds = new google.maps.LatLngBounds();
           bounds.extend(new google.maps.LatLng(in_country.north, in_country.east));
@@ -198,10 +198,10 @@
           $scope.itf_show_cities();
 
           /* $scope.$apply(); */
-        }
+        };
 
         $scope.itf_get_countries = function(in_CountryName) {
-          var arr = []
+          var arr = [];
           var re = new RegExp(in_CountryName, 'gi');
           for (var i = 0; i < $scope.countries.length; i++) {
             if (    $scope.countries[i].countryName.match(re)
@@ -210,9 +210,9 @@
             }
           }
           return arr;
-        }
+        };
         $scope.itf_get_cities = function(in_CityName) {
-          var arr = []
+          var arr = [];
           var re = new RegExp(in_CityName, 'gi');
           for (var i = 0; i < $scope.cities.length; i++) {
             if (    $scope.cities[i].name.match(re)
@@ -221,18 +221,18 @@
             }
           }
           return arr;
-        }
+        };
 
         $scope.GetFontSize = function(country) {
           if (country.population == null || country.population == 0) {
             return 5;
           }
           return 5 + 2*log10(country.population);
-        }
+        };
 
         $scope.show_continents = function() {
 
-        }
+        };
 
 
         $scope.opts = { 'tightness':{'value':'1', 'options': [ {'name':'Tight schedule',   'value':'0'}
@@ -253,9 +253,9 @@
               $('#div_add_city').slideDown('fast');
             }
           );
-        }
+        };
         
-        $scope.opts['add_place'].callback = function(in_value) {
+        $scope.opts.add_place.callback = function(in_value) {
           $scope.g_cont_name = "";
 
           if ($('#div_add_continent').is(":visible") && in_value != '0') {
@@ -288,20 +288,20 @@
               $scope.itf_show_cities();
               break;
           }                    
-        }
+        };
 
         
         $scope.opt_get = function(in_opt_name) {
           $scope.opt_set(in_opt_name, $scope.opts[in_opt_name].value);
           return $scope.opts[in_opt_name].options;
-        }
+        };
 
         $scope.opt_set = function(in_opt_name, in_value) {
           $scope.opts[in_opt_name].value = in_value;
           var n = $scope.opts[in_opt_name].options.length - 1;
           for (var j = 0; j <= n; j++) {
             var s = "option_button";
-            if (j == 0) 
+            if (j === 0) 
               s += " option_button_first";
             if (j == n) 
               s += " option_button_last";
@@ -310,12 +310,12 @@
 
             $scope.opts[in_opt_name].options[j].style = s;
           }
-        }
+        };
 
         $scope.opt_click = function(in_opt_name, in_value) {
           $scope.opt_set(in_opt_name, in_value);
           $scope.opts[in_opt_name].callback(in_value);
-        }
+        };
 
 
       }
