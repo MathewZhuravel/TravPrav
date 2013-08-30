@@ -1,6 +1,6 @@
 #!/bin/sh
 git add .
-git commit -m 'some cleanup'
+git commit -m 'test from work'
 git push -u origin develop
 git checkout master
 git merge develop
