@@ -394,21 +394,21 @@
     
     function google_signinCallback(authResult) {
       if (authResult['access_token']) {
-        // Successfully authorized
-        // Hide the sign-in button now that the user is authorized, for example:
-        document.getElementById('signinButton').setAttribute('style', 'display: none');
-
-        console.log('Good to see you, ' + authResult.name + '.');
-        $('#div_Login').hide();
-        $('#img_User').show();
-        /*
-        $('#img_User').attr('src', '//graph.facebook.com/' + response.id + '/picture');
-        $('#a_UserImg').attr('href', response.link);
-        $('#a_UserName').attr('href', response.link);
-        */
-        $('#a_UserName').text(authResult.name);
-        $('#div_User').show();
-
+        gapi.client.load('plus', 'v1', function(){
+          var request = gapi.client.plus.people.get({
+            'userId': 'me'
+          });
+          request.execute(function(response) {
+            console.log('Retrieved profile for:' + response.displayName);
+            $('#div_Login').hide();
+            $('#img_User').show();
+            $('#img_User').attr('src', response.image.url);
+            $('#a_UserImg').attr('href', response.url);
+            $('#a_UserName').attr('href', response.url);
+            $('#a_UserName').text(response.displayName);
+            $('#div_User').show();
+          });
+        });
       } else if (authResult['error']) {
         // There was an error.
         // Possible error codes:
