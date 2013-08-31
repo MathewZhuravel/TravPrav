@@ -440,7 +440,7 @@
       
       <div style="float:right;">
         <div id="div_Login" class="dropdown">
-          <a data-toggle="dropdown" href="#">Login&nbsp<span class="glyphicon glyphicon-circle-arrow-down"></span></a>&nbsp
+          <a data-toggle="dropdown" href="#">Login</a>&nbsp
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_logins">
             <li role="presentation">
               <div>
@@ -448,9 +448,9 @@
                   <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>    
                 </div>
               </div>
-            <!--/li>
+            </li>
             <li role="presentation" class="divider"></li>
-            <li role="presentation"-->
+            <li role="presentation">
               <div>
                 <div class="div_center">
                   <span id="signinButton">
@@ -488,7 +488,7 @@
   <div class="Plan">
     <div id="div_Plan" class="nano has-scrollbar">
       <div class="content" ng-controller="PlanCtrl">
-      Here the data!!
+      Here the data!!h
         <br>
         <div id="div_settings" class="selector">
           <a ng-repeat="opt in opt_get('tightness')" href="" class="{{opt.style}}" ng-click="opt_set('tightness', opt.value)">
@@ -545,14 +545,15 @@
           </div>
         </div>
 
-        <div class="panel-group shad" id="accordion" style="margin:10px;">
+        <div class="panel-group" id="accordion" style="margin:10px;">
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseDiv">
-                  <span class="glyphicon glyphicon-collapse-down"></span>
-                  Collapsible Group Item #1
+                  <img src="/assets/img/collapse.png" style="width=20px;height=20px;">
                 </a>
+                <img src="/assets/img/home.png" style="width=20px;height=20px;">
+                Home: 123-45 Addison Ave. Southlake MI 2432352
               </h4>
             </div>
             <div id="collapseDiv" class="panel-collapse collapse in">
