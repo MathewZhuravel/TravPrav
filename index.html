@@ -37,26 +37,38 @@
         });
       }
       
-      function LoginUser(in_service, in_id, in_displayName, in_serviceUrl, in_imgUrl) {
+      function cUser() {
+        this.id = '';
+      }
+      cUser.prototype.Login = function(in_serviceName, in_id, in_displayName, in_serviceUrl, in_imgUrl) {
+        this.serviceName = in_serviceName;
+        this.id = in_id;
+        this.displayName = in_displayName;
+        this.serviceUrl = in_serviceUrl;
+        this.imgUrl = in_imgUrl;
+
         $('#div_Login').hide();
-        $('#img_User').show();
-        $('#img_User').attr('src', in_imgUrl);
-        $('#a_UserImg').attr('href', in_serviceUrl);
-        $('#a_UserName').attr('href', in_serviceUrl);
-        $('#a_UserName').text(in_displayName);
-        $('#a_UserSn').text('Go to ' + in_service + ' profile');
+        // $('#img_User').show();
+        $('#img_User').attr('src', this.imgUrl);
+        $('#a_UserImg').attr('href', this.serviceUrl);
+        $('#a_UserName').attr('href', this.serviceUrl);
+        $('#a_UserName').text(this.displayName);
+        $('#a_UserSn').text('Go to ' + this.serviceName + ' profile');
+        $('#a_UserSn').attr('href', this.serviceUrl);
         $('#div_User').show();
       };
-      function LogoutUser() {
-        $('#div_Login').hide();
-        $('#img_User').show();
-        $('#img_User').attr('src', in_imgUrl);
-        $('#a_UserImg').attr('href', in_serviceUrl);
-        $('#a_UserName').attr('href', in_serviceUrl);
-        $('#a_UserName').text(in_displayName);
-        $('#a_UserSn').text('Go to ' + in_service + ' profile');
-        $('#div_User').show();
+      cUser.prototype.Logout = function() {
+        this.id = '';
+
+        $('#div_Login').show();
+        //$('#img_User').hide();
+        $('#div_User').hide();
       };
+      var g_User = new cUser();
+      
+      $('a_UserLogout').click(function(){ 
+        g_User.Logout(); 
+      });
 
       var map;
       var service;
@@ -366,7 +378,7 @@
       FB.Event.subscribe('auth.authResponseChange', function(response) {
         if (response.status === 'connected') {
           FB.api('/me', function(response) {
-            LoginUser('Facebook', response.id, response.name, response.link, '//graph.facebook.com/' + response.id + '/picture');
+            g_User.Login('Facebook', response.id, response.name, response.link, '//graph.facebook.com/' + response.id + '/picture');
           });
           
         } else if (response.status === 'not_authorized') {
@@ -405,7 +417,7 @@
             'userId': 'me'
           });
           request.execute(function(response) {
-            LoginUser('Google+', response.id, response.displayName, response.url, response.image.url.replace('?sz=50', '?sz=30'));
+            g_User.Login('Google+', response.id, response.displayName, response.url, response.image.url.replace('?sz=50', '?sz=30'));
           });
         });
       } else if (authResult.error) {
@@ -427,7 +439,7 @@
       
       <div style="float:right;">
         <div id="div_Login" class="dropdown">
-          <a data-toggle="dropdown" href="#">&nbsp<span class="glyphicon glyphicon-user">Login</span></a>&nbsp
+          <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span>&nbsp Login &nbsp</a>
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_logins">
             <li role="presentation">
               <div>
