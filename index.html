@@ -37,14 +37,24 @@
         });
       }
       
-      
-      function SetLoggedUser(in_service, in_id, in_displayName, in_serviceUrl, in_imgUrl) {
+      function LoginUser(in_service, in_id, in_displayName, in_serviceUrl, in_imgUrl) {
         $('#div_Login').hide();
         $('#img_User').show();
         $('#img_User').attr('src', in_imgUrl);
         $('#a_UserImg').attr('href', in_serviceUrl);
         $('#a_UserName').attr('href', in_serviceUrl);
         $('#a_UserName').text(in_displayName);
+        $('#a_UserSn').text('Go to ' + in_service + ' profile');
+        $('#div_User').show();
+      };
+      function LogoutUser() {
+        $('#div_Login').hide();
+        $('#img_User').show();
+        $('#img_User').attr('src', in_imgUrl);
+        $('#a_UserImg').attr('href', in_serviceUrl);
+        $('#a_UserName').attr('href', in_serviceUrl);
+        $('#a_UserName').text(in_displayName);
+        $('#a_UserSn').text('Go to ' + in_service + ' profile');
         $('#div_User').show();
       };
 
@@ -356,16 +366,7 @@
       FB.Event.subscribe('auth.authResponseChange', function(response) {
         if (response.status === 'connected') {
           FB.api('/me', function(response) {
-            SetLoggedUser('facebook', response.id, response.name, response.link, '//graph.facebook.com/' + response.id + '/picture');
-            /*
-            $('#div_Login').hide();
-            $('#img_User').show();
-            $('#img_User').attr('src', '//graph.facebook.com/' + response.id + '/picture');
-            $('#a_UserImg').attr('href', response.link);
-            $('#a_UserName').attr('href', response.link);
-            $('#a_UserName').text(response.name);
-            $('#div_User').show();
-            */
+            LoginUser('Facebook', response.id, response.name, response.link, '//graph.facebook.com/' + response.id + '/picture');
           });
           
         } else if (response.status === 'not_authorized') {
@@ -395,22 +396,8 @@
       js = d.createElement(s); js.id = id;
       js.src = "//connect.facebook.net/en_US/all.js";
       fjs.parentNode.insertBefore(js, fjs);
-    } (document, 'script', 'facebook-jssdk'));
-    /*
-    function ShowUser() {
-      console.log('Welcome! Fetching your information...');
-      FB.api('/me', function(response) {
-        console.log('Good to see you, ' + response.name + '.');
-        $('#div_Login').hide();
-        $('#img_User').show();
-        $('#img_User').attr('src', '//graph.facebook.com/' + response.id + '/picture');
-        $('#a_UserImg').attr('href', response.link);
-        $('#a_UserName').attr('href', response.link);
-        $('#a_UserName').text(response.name);
-        $('#div_User').show();
-      });
-    }
-    */
+    } (document, 'script', 'Facebook-jssdk'));
+
     function google_signinCallback(authResult) {
       if (authResult.access_token) {
         gapi.client.load('plus', 'v1', function(){
@@ -418,21 +405,10 @@
             'userId': 'me'
           });
           request.execute(function(response) {
-            SetLoggedUser('google+', response.id, response.displayName, response.url, response.image.url.replace('?sz=50', '?sz=30'));
-            /*
-            $('#div_Login').hide();
-            $('#img_User').show();
-            $('#img_User').attr('src', response.image.url.replace('?sz=50', '?sz=30');
-            $('#a_UserImg').attr('href', response.url);
-            $('#a_UserName').attr('href', response.url);
-            $('#a_UserName').text(response.displayName);
-            $('#div_User').show();
-            */
+            LoginUser('Google+', response.id, response.displayName, response.url, response.image.url.replace('?sz=50', '?sz=30'));
           });
         });
       } else if (authResult.error) {
-        // There was an error.
-        // Possible error codes:
         //   "access_denied" - User denied access to your app
         //   "immediate_failed" - Could not automatically log in the user
         console.log('There was an error: ' + authResult.error);
@@ -451,26 +427,30 @@
       
       <div style="float:right;">
         <div id="div_Login" class="dropdown">
-          <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user">Login</span></a>
+          <a data-toggle="dropdown" href="#">&nbsp<span class="glyphicon glyphicon-user">Login</span></a>&nbsp
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_logins">
             <li role="presentation">
-              <div class="div_center">
-                <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>    
+              <div>
+                <div class="div_center">
+                  <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>    
+                </div>
               </div>
             </li>
             <li role="presentation" class="divider"></li>
             <li role="presentation">
-              <div class="div_center">
-                <span id="signinButton">
-                  <span
-                    class="g-signin"
-                    data-callback="google_signinCallback"
-                    data-clientid="35967075682.apps.googleusercontent.com"
-                    data-cookiepolicy="single_host_origin"
-                    data-requestvisibleactions="http://schemas.google.com/AddActivity"
-                    data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me">
+              <div>
+                <div class="div_center">
+                  <span id="signinButton">
+                    <span
+                      class="g-signin"
+                      data-callback="google_signinCallback"
+                      data-clientid="35967075682.apps.googleusercontent.com"
+                      data-cookiepolicy="single_host_origin"
+                      data-requestvisibleactions="http://schemas.google.com/AddActivity"
+                      data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me">
+                    </span>
                   </span>
-                </span>   
+                </div>
               </div>
             </li>
           </ul>
@@ -480,9 +460,9 @@
         <div id="div_User" class="dropdown" style="display:none;">
           <a id="a_UserImg" target="_blank"><img id="img_User" src="" width="30" height="30"></a>
           <a id="a_UserName" target="_blank"></a>
-          <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-circle-arrow-down"></span></a>
+          <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-circle-arrow-down"></span></a>&nbsp
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_label">
-            <li role="presentation"><a id="a_UserSn" href="#">Go to Facebook profile</a></li>
+            <li role="presentation"><a id="a_UserSn" href="#">Go to profile</a></li>
             <li role="presentation" class="divider"></li>
             <li role="presentation"><a id="a_UserLogout" href="#">Logout</a></li>
           </ul>
