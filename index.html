@@ -385,8 +385,9 @@
         $('#div_Login').hide();
         $('#img_User').show();
         $('#img_User').attr('src', '//graph.facebook.com/' + response.id + '/picture');
-        $('#a_UserSn').attr('href', response.link);
-        $('#a_UserTop').text(response.name);
+        $('#a_UserImg').attr('href', response.link);
+        $('#a_UserName').attr('href', response.link);
+        $('#a_UserName').text(response.name);
         $('#div_User').show();
       });
     }
@@ -405,8 +406,10 @@
         <div id="div_Login">
       	  <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>
       	</div>
-        <div id="div_User" class="dropdown">
-          <a id="a_UserTop" data-toggle="dropdown" href="#"><img id="img_User" style="display:none;" src="" width="30" height="30"></a>
+        <div id="div_User" class="dropdown" style="display:none;">
+          <a id="a_UserImg"><img id="img_User" src="" width="30" height="30"></a>
+          <a id="a_UserName"></a>
+          <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-circle-arrow-down"></span></a>
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_label">
             <li role="presentation"><a id="a_UserSn" href="#">Go to Facebook profile</a></li>
             <li role="presentation" class="divider"></li>
@@ -415,12 +418,9 @@
         </div>
       </div>
       
-      <div style="float:right;">
-      	<div id="div_User">
-      	  <a id="a_User" href=""><img id="img_User" style="display:none;" src="" width="30" height="30"></a>
-      	</div>
-      </div>
+
   </div>
+
   <div class="Plan">
     <div id="div_Plan" class="nano has-scrollbar">
       <div class="content" ng-controller="PlanCtrl">
