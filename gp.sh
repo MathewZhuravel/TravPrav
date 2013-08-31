@@ -1,6 +1,6 @@
 #!/bin/sh
 git add .
-git commit -m 'added g+ login'
+git commit -m 'iconzz!!'
 git push -u origin develop
 git checkout master
 git merge develop
