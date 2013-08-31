@@ -35,6 +35,11 @@
         $('#collapseDiv').on('shown.bs.collapse', function () {
           $(".nano").nanoScroller();
         });
+        
+        $('#a_UserLogout').click(function(){ 
+          g_User.Logout(); 
+          return false;
+        });
       }
       
       function cUser() {
@@ -435,7 +440,7 @@
       
       <div style="float:right;">
         <div id="div_Login" class="dropdown">
-          <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span>&nbsp Login &nbsp</a>
+          <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user" style="width=30px;height=30px;"></span>Login</a>&nbsp
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_logins">
             <li role="presentation">
               <div>
@@ -560,19 +565,9 @@
 
 
         <script> 
-        
           init_boot(); 
-          
-          $('#a_UserLogout').click(function(){ 
-            g_User.Logout(); 
-            return false;
-          });
-
-          
         </script>
 
-
-      
       </div>
     </div>
   </div>
