@@ -9,7 +9,6 @@ html, body {
 	display: block; 
 	width: 100%;
 	height: 30px;
-	background-color: #999999;
 }
 
 .Plan {
@@ -43,6 +42,12 @@ p {
  font-size: 8;
 }
 
+.div_center {
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .LinkButton {
   -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;

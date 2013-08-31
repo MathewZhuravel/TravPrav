@@ -454,20 +454,24 @@
           <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user">Login</span></a>
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_logins">
             <li role="presentation">
-              <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>    
+              <div class="div_center">
+                <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>    
+              </div>
             </li>
             <li role="presentation" class="divider"></li>
             <li role="presentation">
-              <span id="signinButton">
-                <span
-                  class="g-signin"
-                  data-callback="google_signinCallback"
-                  data-clientid="35967075682.apps.googleusercontent.com"
-                  data-cookiepolicy="single_host_origin"
-                  data-requestvisibleactions="http://schemas.google.com/AddActivity"
-                  data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me">
-                </span>
-              </span>              
+              <div class="div_center">
+                <span id="signinButton">
+                  <span
+                    class="g-signin"
+                    data-callback="google_signinCallback"
+                    data-clientid="35967075682.apps.googleusercontent.com"
+                    data-cookiepolicy="single_host_origin"
+                    data-requestvisibleactions="http://schemas.google.com/AddActivity"
+                    data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me">
+                  </span>
+                </span>   
+              </div>
             </li>
           </ul>
         </div>
