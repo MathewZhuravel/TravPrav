@@ -402,7 +402,7 @@
             console.log('Retrieved profile for:' + response.displayName);
             $('#div_Login').hide();
             $('#img_User').show();
-            $('#img_User').attr('src', response.image.url);
+            $('#img_User').attr('src', response.image.url + '?sz=30');
             $('#a_UserImg').attr('href', response.url);
             $('#a_UserName').attr('href', response.url);
             $('#a_UserName').text(response.displayName);
@@ -443,7 +443,7 @@
                   data-clientid="35967075682.apps.googleusercontent.com"
                   data-cookiepolicy="single_host_origin"
                   data-requestvisibleactions="http://schemas.google.com/AddActivity"
-                  data-scope="https://www.googleapis.com/auth/plus.login">
+                  data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me">
                 </span>
               </span>              
             </li>
