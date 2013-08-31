@@ -66,10 +66,6 @@
       };
       var g_User = new cUser();
       
-      $('#a_UserLogout').click(function(){ 
-        g_User.Logout(); 
-      });
-
       var map;
       var service;
       var infowindow;
@@ -563,7 +559,17 @@
         </div>
 
 
-        <script> init_boot(); </script>
+        <script> 
+        
+          init_boot(); 
+          
+          $('#a_UserLogout').click(function(){ 
+            g_User.Logout(); 
+            return false;
+          });
+
+          
+        </script>
 
 
       
