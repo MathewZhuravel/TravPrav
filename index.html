@@ -595,7 +595,7 @@
 
 
        <div>
-          <div ng-repeat="step in step_array()" class="panel-group" id="{{step.accordion_id()}}" style="margin:10px;">
+          <div ng-repeat="step in step_array()" ng-init="step.init_events();" class="panel-group" id="{{step.accordion_id()}}" style="margin:10px;">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <!--h4 class="panel-title"-->
@@ -612,9 +612,6 @@
                 </div>
               </div>
             </div>
-            <script>
-              {{step.init_events();}}
-            </script>
           </div>
 
         </div>
