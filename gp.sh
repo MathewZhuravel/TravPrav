@@ -1,6 +1,6 @@
 #!/bin/sh
 git add .
-git commit -m 'ng play'
+git commit -m 'google locations edit box'
 git push -u origin develop
 git checkout master
 git merge develop
