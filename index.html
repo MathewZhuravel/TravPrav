@@ -41,7 +41,12 @@
           return false;
         });
       }
-      
+
+
+      function connect_searchBox(in_editbox) {
+        return new google.maps.places.SearchBox(in_editbox);
+      };
+
       function cUser() {
         this.id = '';
       }
@@ -351,11 +356,6 @@
           $scope.opts[in_opt_name].callback(in_value);
         };
 
-
-        $scope.connect_searchBox = function(in_editbox) {
-          return new google.maps.places.SearchBox(in_editbox);
-        }
-
         /*
          * Steps
          */
@@ -393,7 +393,10 @@
               $scope.searchBox = new google.maps.places.SearchBox($scope.editBox);
               this.p_search_box = $scope.searchBox;
               */
-              this.p_search_box = $scope.connect_searchBox(this.p_place_editbox);
+              
+              // this.p_search_box = $scope.connect_searchBox(this.p_place_editbox);
+              
+              connect_searchBox(this.p_place_editbox);
             }
             console.log('got here...');
           }
