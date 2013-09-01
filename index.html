@@ -352,6 +352,29 @@
         };
 
 
+        /*
+         * Steps
+         */
+        
+        $scope.g_StepNum = 0;
+        
+        $scope.cStep = function() {
+          this.num = $scope.g_StepNum++;
+        };
+        $scope.cStep.prototype.title_id = function() {
+          return 'a_step_title_' + this.num;
+        };
+        $scope.cStep.prototype.panel_id = function() {
+          return 'div_step_panel_' + this.num;
+        };
+        
+        $scope.a_step = [];
+        $scope.a_step.push(new $scope.cStep());
+        
+        $scope.step_array = function() {
+          return $scope.a_step;
+        };
+
       }
 
   </script>
@@ -488,7 +511,7 @@
   <div class="Plan">
     <div id="div_Plan" class="nano has-scrollbar">
       <div class="content" ng-controller="PlanCtrl">
-      Here the data!!h
+        Here the data!!h
         <br>
         <div id="div_settings" class="selector">
           <a ng-repeat="opt in opt_get('tightness')" href="" class="{{opt.style}}" ng-click="opt_set('tightness', opt.value)">
@@ -545,6 +568,30 @@
           </div>
         </div>
 
+
+       <div>
+          <div ng-repeat="step in step_array()" class="panel-group" id="{{step.title_id()}}" style="margin:10px;">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#{{step.title_id()}}" href="#{{step.panel_id()}}">
+                    <img src="/assets/img/arrow_sans_down_16.png" width="16" height="16">
+                  </a>
+                  <img src="/assets/img/home.png" width="16" height="16">
+                  Home: 123-45 Addison Ave. Southlake MI 2432352
+                </h4>
+              </div>
+              <div id="{{step.panel_id()}}" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+        <!-->
         <div class="panel-group" id="accordion" style="margin:10px;">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -563,7 +610,7 @@
             </div>
           </div>
         </div>
-
+        <-->
 
         <script> 
           init_boot(); 
