@@ -650,8 +650,11 @@
                   
                   <form class="form-inline" role="StepPlace">
                     <div class="form-group">
-                      <label for="{{step.place_editbox_id()}}">Location:</label>
-                      <input type="search" class="form-control" id="{{step.place_editbox_id()}}" ng-focus="step.place_editbox_focus();" placeholder="Enter place">
+                      <input type="search" class="form-control" id="{{step.place_editbox_id()}}" 
+                        style="width:300px"
+                        ng-focus="step.place_editbox_focus();"
+                        ng-click="step.place_editbox_focus();"
+                        placeholder="Enter place">
                     </div>
                     <button type="submit" class="btn btn-default">Save</button>
                   </form>                  
