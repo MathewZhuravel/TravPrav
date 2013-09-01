@@ -386,7 +386,10 @@
           return this.is_open ? '/assets/img/arrow_sans_down_16.png' : '/assets/img/arrow_sans_right_16.png';
         }
         $scope.cStep.prototype.place_editbox_focus = function() {
-          var searchBox = new google.maps.places.SearchBox($('#' + this.place_editbox_id()));
+          this.p_place_editbox = $('#' + this.place_editbox_id());
+          if (this.p_search_box === undefined){
+            this.p_search_box = new google.maps.places.SearchBox(this.p_place_editbox);
+          }
           /*
           var markers = [];
           google.maps.event.addListener(searchBox, 'places_changed', function() {
@@ -652,7 +655,6 @@
                     <div class="form-group">
                       <input type="search" class="form-control" id="{{step.place_editbox_id()}}" 
                         style="width:300px"
-                        ng-focus="step.place_editbox_focus();"
                         ng-click="step.place_editbox_focus();"
                         placeholder="Enter place">
                     </div>
