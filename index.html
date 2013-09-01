@@ -360,6 +360,7 @@
         
         $scope.cStep = function() {
           this.num = $scope.g_StepNum++;
+          this.is_open = true;
         };
         $scope.cStep.prototype.accordion_id = function() {
           return 'a_step_title_' + this.num;
@@ -367,30 +368,19 @@
         $scope.cStep.prototype.panel_id = function() {
           return 'div_step_panel_' + this.num;
         };
-        $scope.cStep.prototype.toggle_img_id = function() {
-          return 'img_step_toggle_' + this.num;
-        };
-        
-        $scope.cStep.prototype.init_events= function() {
-          /*
-          $('#' + this.panel_id()).on('hide.bs.collapse', function () {
-            $('#' + this.accordion_id()).removeClass("shad");
-          });
-          */
+        $scope.cStep.prototype.click_title = function() {
+          this.is_open = !this.is_open;
+
           $('#' + this.panel_id()).on('hidden.bs.collapse', function () {
             $(".nano").nanoScroller();
-            $('#' + this.toggle_img_id()).attr("src", "/assets/img/arrow_sans_right_16.png");
           });
-          /*
-          $('#' + this.panel_id()).on('show.bs.collapse', function () {
-            $('#' + this.accordion_id()).addClass("shad");
-          });
-          */
           $('#' + this.panel_id()).on('shown.bs.collapse', function () {
             $(".nano").nanoScroller();
-            $('#' + this.toggle_img_id()).attr("src", "/assets/img/arrow_sans_down_16.png");
           });
           
+        };
+        $scope.cStep.prototype.toggle_img_src = function() {
+          return this.is_open ? '/assets/img/arrow_sans_down_16.png' : '/assets/img/arrow_sans_right_16.png';
         }
 
         $scope.a_step = [];
@@ -595,12 +585,15 @@
 
 
        <div>
-          <div ng-repeat="step in step_array()" ng-init="step.init_events();" class="panel-group" id="{{step.accordion_id()}}" style="margin:10px;">
+          <div ng-repeat="step in step_array()" class="panel-group" id="{{step.accordion_id()}}" style="margin:10px;">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <!--h4 class="panel-title"-->
-                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#{{step.accordion_id()}}" href="#{{step.panel_id()}}">
-                    <img id="{{step.toggle_img_id()}}" src="/assets/img/arrow_sans_down_16.png" width="16" height="16">
+                  <a
+                    class="accordion-toggle" 
+                    data-toggle="collapse" data-parent="#{{step.accordion_id()}}" 
+                    href="#{{step.panel_id()}}" ng-click="step.click_title();">
+                    <img src="{{step.toggle_img_src();}}" width="16" height="16">
                   </a>
                   <img src="/assets/img/home.png" width="16" height="16">
                   Home: 123-45 Addison Ave. Southlake MI 2432352
