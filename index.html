@@ -386,7 +386,7 @@
           return '/assets/img/arrow_sans_' + (this.is_open ? 'down' : 'right') + '_16.png';
         };
         $scope.cStep.prototype.place_editbox_change = function() {
-          var places = this.p_search_box.getPlaces();
+          var places = this.p_place_searchbox.getPlaces();
       
           for (var i = 0, marker; marker = markers[i]; i++) {
             marker.setMap(null);
@@ -419,12 +419,13 @@
         }
         $scope.cStep.prototype.place_editbox_focus = function() {
           this.p_place_editbox = document.getElementById(this.place_editbox_id());
-          if (this.p_search_box === undefined) {
-            this.p_search_box = new google.maps.places.SearchBox(this.p_place_editbox);
+          if (this.p_place_searchbox === undefined) {
+            this.p_place_searchbox = new google.maps.places.SearchBox(this.p_place_editbox);
           }  
 
           var markers = [];
-          google.maps.event.addListener(searchBox, 'places_changed', this.place_editbox_change); /*function() {
+          google.maps.event.addListener(this.p_place_searchbox, 'places_changed', this.place_editbox_change); /*function() {
+          
             var places = searchBox.getPlaces();
         
             for (var i = 0, marker; marker = markers[i]; i++) {
@@ -459,7 +460,7 @@
         
           google.maps.event.addListener(map, 'bounds_changed', function() {
             var bounds = map.getBounds();
-            this.p_search_box.setBounds(bounds);
+            this.p_place_searchbox.setBounds(bounds);
           });
           */
         }
