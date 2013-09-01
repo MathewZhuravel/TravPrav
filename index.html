@@ -384,7 +384,9 @@
           if (this.is_open) {
             this.p_place_editbox = $('#' + this.place_editbox_id());
             if (this.p_search_box === undefined) {
-              this.p_search_box = new google.maps.places.SearchBox(this.p_place_editbox);
+              var editBox = this.p_place_editbox;
+              var SearchBox = new google.maps.places.SearchBox(editBox);
+              this.p_search_box = SearchBox;
             }
             console.log('got here...');
           }
