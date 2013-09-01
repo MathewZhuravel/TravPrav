@@ -43,10 +43,6 @@
       }
 
 
-      function connect_searchBox(in_editbox_name) {
-        return new google.maps.places.SearchBox($('#' + in_editbox_name));
-      }
-
       function cUser() {
         this.id = '';
       }
@@ -384,7 +380,8 @@
           $('#' + this.panel_id()).on('shown.bs.collapse', function () {
             $(".nano").nanoScroller();
           });
-          
+
+          /*
           if (this.is_open) {
             this.p_place_editbox = $('#' + this.place_editbox_id());
             if (this.p_search_box === undefined) {
@@ -397,9 +394,9 @@
               // this.p_search_box = $scope.connect_searchBox(this.p_place_editbox);
               
               //connect_searchBox(this.place_editbox_id());
-            }
-            console.log('got here...');
-          }
+            //}
+            //console.log('got here...');
+          //}
           
         };
         $scope.cStep.prototype.toggle_img_src = function() {
@@ -407,14 +404,15 @@
         };
         $scope.cStep.prototype.place_editbox_focus = function() {
           //global.g_editbox_id = this.place_editbox_id();
-          setTimeout(function() {
+          //setTimeout(function() {
             
             //new google.maps.places.SearchBox($('#i_step_place_0'));
-            
-            var obj = document.getElementById('i_step_place_0');
-            new google.maps.places.SearchBox(obj);
-            
-          }, 100);
+
+          this.p_place_editbox = document.getElementById(this.place_editbox_id());
+          if (this.p_search_box === undefined) {
+            this.p_search_box = new google.maps.places.SearchBox(this.p_place_editbox);
+          }  
+          //}, 100);
           
           /*
           this.p_place_editbox = $('#' + this.place_editbox_id() + '_');
