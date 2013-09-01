@@ -43,9 +43,9 @@
       }
 
 
-      function connect_searchBox(in_editbox) {
-        return new google.maps.places.SearchBox(in_editbox);
-      };
+      function connect_searchBox(in_editbox_name) {
+        return new google.maps.places.SearchBox($('#' + in_editbox_name));
+      }
 
       function cUser() {
         this.id = '';
@@ -396,7 +396,7 @@
               
               // this.p_search_box = $scope.connect_searchBox(this.p_place_editbox);
               
-              connect_searchBox(this.p_place_editbox);
+              connect_searchBox(this.place_editbox_id());
             }
             console.log('got here...');
           }
