@@ -406,12 +406,12 @@
           return this.is_open ? '/assets/img/arrow_sans_down_16.png' : '/assets/img/arrow_sans_right_16.png';
         };
         $scope.cStep.prototype.place_editbox_focus = function() {
-          global.g_editbox_id = this.place_editbox_id();
+          //global.g_editbox_id = this.place_editbox_id();
           setTimeout(function() {
             
             new google.maps.places.SearchBox($('#i_step_place_0'));
             
-          }, 500);
+          }, 100);
           
           /*
           this.p_place_editbox = $('#' + this.place_editbox_id() + '_');
