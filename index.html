@@ -368,6 +368,9 @@
         $scope.cStep.prototype.panel_id = function() {
           return 'div_step_panel_' + this.num;
         };
+        $scope.cStep.prototype.place_editbox_id = function() {
+          return 'i_step_place_' + this.num;
+        };
         $scope.cStep.prototype.click_title = function() {
           this.is_open = !this.is_open;
 
@@ -381,6 +384,49 @@
         };
         $scope.cStep.prototype.toggle_img_src = function() {
           return this.is_open ? '/assets/img/arrow_sans_down_16.png' : '/assets/img/arrow_sans_right_16.png';
+        }
+        $scope.cStep.prototype.place_editbox_focus = function() {
+          var searchBox = new google.maps.places.SearchBox($('#' + this.place_editbox_id()));
+          /*
+          var markers = [];
+          google.maps.event.addListener(searchBox, 'places_changed', function() {
+            var places = searchBox.getPlaces();
+        
+            for (var i = 0, marker; marker = markers[i]; i++) {
+              marker.setMap(null);
+            }
+        
+            markers = [];
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0, place; place = places[i]; i++) {
+              var image = {
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(25, 25)
+              };
+        
+              var marker = new google.maps.Marker({
+                map: map,
+                icon: image,
+                title: place.name,
+                position: place.geometry.location
+              });
+        
+              markers.push(marker);
+        
+              bounds.extend(place.geometry.location);
+            }
+        
+            map.fitBounds(bounds);
+          });
+        
+          google.maps.event.addListener(map, 'bounds_changed', function() {
+            var bounds = map.getBounds();
+            searchBox.setBounds(bounds);
+          });
+          */
         }
 
         $scope.a_step = [];
@@ -601,7 +647,16 @@
               </div>
               <div id="{{step.panel_id()}}" class="panel-collapse collapse in">
                 <div class="panel-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                  
+                  <form role="StepPlace">
+                    <div class="form-group">
+                      <label for="{{step.place_editbox_id()}}">Email address</label>
+                      <input type="email" class="form-control" id="{{step.place_editbox_id()}}" ng-focus="step.place_editbox_focus();" placeholder="Enter place">
+                    </div>
+                    <button type="submit" class="btn btn-default">Save</button>
+                  </form>                  
+                  
+                  
                 </div>
               </div>
             </div>
