@@ -386,7 +386,7 @@
           return this.is_open ? '/assets/img/arrow_sans_down_16.png' : '/assets/img/arrow_sans_right_16.png';
         };
         $scope.cStep.prototype.place_editbox_focus = function() {
-          this.p_place_editbox = $('#' + this.place_editbox_id());
+          this.p_place_editbox = $('#' + this.place_editbox_id() + '_');
           if (this.p_search_box === undefined) {
             this.p_search_box = new google.maps.places.SearchBox(this.p_place_editbox);
           }
@@ -650,6 +650,11 @@
               </div>
               <div id="{{step.panel_id()}}" class="panel-collapse collapse in">
                 <div class="panel-body">
+                  
+                  <input type="search" class="form-control" id="{{step.place_editbox_id()+'_'}}" 
+                        style="width:300px"
+                        ng-click="step.place_editbox_focus();"
+                        placeholder="Enter place">
                   
                   <form class="form-inline" role="StepPlace">
                     <div class="form-group">
