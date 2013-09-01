@@ -409,7 +409,10 @@
           //global.g_editbox_id = this.place_editbox_id();
           setTimeout(function() {
             
-            new google.maps.places.SearchBox($('#i_step_place_0'));
+            //new google.maps.places.SearchBox($('#i_step_place_0'));
+            
+            var obj = document.getElementById('i_step_place_0');
+            new google.maps.places.SearchBox(obj);
             
           }, 100);
           
