@@ -352,6 +352,10 @@
         };
 
 
+        $scope.connect_searchBox = function(in_editbox) {
+          return new google.maps.places.SearchBox(in_editbox);
+        }
+
         /*
          * Steps
          */
@@ -384,9 +388,12 @@
           if (this.is_open) {
             this.p_place_editbox = $('#' + this.place_editbox_id());
             if (this.p_search_box === undefined) {
+              /*
               $scope.editBox = this.p_place_editbox;
               $scope.searchBox = new google.maps.places.SearchBox($scope.editBox);
               this.p_search_box = $scope.searchBox;
+              */
+              this.p_search_box = $scope.connect_searchBox(this.p_place_editbox);
             }
             console.log('got here...');
           }
