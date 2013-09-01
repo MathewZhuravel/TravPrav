@@ -381,47 +381,50 @@
             $(".nano").nanoScroller();
           });
 
-          /*
-          if (this.is_open) {
-            this.p_place_editbox = $('#' + this.place_editbox_id());
-            if (this.p_search_box === undefined) {
-              /*
-              $scope.editBox = this.p_place_editbox;
-              $scope.searchBox = new google.maps.places.SearchBox($scope.editBox);
-              this.p_search_box = $scope.searchBox;
-              */
-              
-              // this.p_search_box = $scope.connect_searchBox(this.p_place_editbox);
-              
-              //connect_searchBox(this.place_editbox_id());
-            //}
-            //console.log('got here...');
-          //}
-          
         };
         $scope.cStep.prototype.toggle_img_src = function() {
-          return this.is_open ? '/assets/img/arrow_sans_down_16.png' : '/assets/img/arrow_sans_right_16.png';
+          return '/assets/img/arrow_sans_' + (this.is_open ? 'down' : 'right') + '_16.png';
         };
+        $scope.cStep.prototype.place_editbox_change = function() {
+          var places = this.p_search_box.getPlaces();
+      
+          for (var i = 0, marker; marker = markers[i]; i++) {
+            marker.setMap(null);
+          }
+      
+          var markers = [];
+          var bounds = new google.maps.LatLngBounds();
+          for (var i = 0, place; place = places[i]; i++) {
+            var image = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+      
+            var marker = new google.maps.Marker({
+              map: map,
+              icon: image,
+              title: place.name,
+              position: place.geometry.location
+            });
+      
+            markers.push(marker);
+      
+            bounds.extend(place.geometry.location);
+          }
+      
+          map.fitBounds(bounds);
+        }
         $scope.cStep.prototype.place_editbox_focus = function() {
-          //global.g_editbox_id = this.place_editbox_id();
-          //setTimeout(function() {
-            
-            //new google.maps.places.SearchBox($('#i_step_place_0'));
-
           this.p_place_editbox = document.getElementById(this.place_editbox_id());
           if (this.p_search_box === undefined) {
             this.p_search_box = new google.maps.places.SearchBox(this.p_place_editbox);
           }  
-          //}, 100);
-          
-          /*
-          this.p_place_editbox = $('#' + this.place_editbox_id() + '_');
-          if (this.p_search_box === undefined) {
-            this.p_search_box = new google.maps.places.SearchBox(this.p_place_editbox);
-          }
-          
+
           var markers = [];
-          google.maps.event.addListener(searchBox, 'places_changed', function() {
+          google.maps.event.addListener(searchBox, 'places_changed', this.place_editbox_change); /*function() {
             var places = searchBox.getPlaces();
         
             for (var i = 0, marker; marker = markers[i]; i++) {
