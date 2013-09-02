@@ -41,6 +41,41 @@
           return false;
         });
       }
+    
+      var g_place_searchbox;
+      
+      function place_editbox_change() {
+        var places = g_place_searchbox.getPlaces();
+    
+        for (var i = 0, marker; marker = markers[i]; i++) {
+          marker.setMap(null);
+        }
+    
+        var markers = [];
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0, place; place = places[i]; i++) {
+          var image = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+    
+          var marker = new google.maps.Marker({
+            map: map,
+            icon: image,
+            title: place.name,
+            position: place.geometry.location
+          });
+    
+          markers.push(marker);
+    
+          bounds.extend(place.geometry.location);
+        }
+    
+        map.fitBounds(bounds);
+      };
 
 
       function cUser() {
@@ -385,6 +420,7 @@
         $scope.cStep.prototype.toggle_img_src = function() {
           return '/assets/img/arrow_sans_' + (this.is_open ? 'down' : 'right') + '_16.png';
         };
+        /*
         $scope.cStep.prototype.place_editbox_change = function() {
           var places = this.p_place_searchbox.getPlaces();
       
@@ -416,15 +452,29 @@
           }
       
           map.fitBounds(bounds);
-        }
+        };
+        */
         $scope.cStep.prototype.place_editbox_focus = function() {
+          
+          /*
           this.p_place_editbox = document.getElementById(this.place_editbox_id());
           if (this.p_place_searchbox === undefined) {
             this.p_place_searchbox = new google.maps.places.SearchBox(this.p_place_editbox);
           }  
 
           var markers = [];
-          google.maps.event.addListener(this.p_place_searchbox, 'places_changed', this.place_editbox_change); /*function() {
+          google.maps.event.addListener(this.p_place_searchbox, 'places_changed', this.place_editbox_change); 
+          */
+          this.p_place_editbox = document.getElementById(this.place_editbox_id());
+          if (g_place_searchbox === undefined) {
+            g_place_searchbox = new google.maps.places.SearchBox(this.p_place_editbox);
+          }  
+
+          var markers = [];
+          google.maps.event.addListener(this.p_place_searchbox, 'places_changed', place_editbox_change); 
+          
+          
+          /*function() {
           
             var places = searchBox.getPlaces();
         
