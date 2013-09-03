@@ -483,6 +483,7 @@
             markers = [];
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0, place; place = places[i]; i++) {
+              /*
               var image = {
                 url: place.icon,
                 size: new google.maps.Size(71, 71),
@@ -497,7 +498,12 @@
                 title: place.name,
                 position: place.geometry.location
               });
-        
+              */
+              var marker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+                title: place.geometry.location
+              });
               markers.push(marker);
         
               bounds.extend(place.geometry.location);
@@ -510,6 +516,23 @@
             var bounds = map.getBounds();
             g_place_searchbox.setBounds(bounds);
           });
+        }
+        
+        $scope.cStep.prototype.place_set_current = function() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var pos = new google.maps.LatLng(position.coords.latitude,
+                                               position.coords.longitude);
+        
+              var marker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                title: 'current location'
+              });
+              markers.push(marker);
+              map.setCenter(pos);
+            }, function() {});
+          }
         }
 
         $scope.a_step = [];
@@ -734,7 +757,10 @@
                       <input type="search" class="form-control" id="{{step.place_editbox_id()}}" 
                         ng-click="step.place_editbox_focus();"
                         placeholder="Enter place and press enter...">
+                    </div>
+                    <form class="form-inline" role="buttonz_todo">
                       <button type="submit" class="btn btn-default">Save</button>
+                      <button type="button" class="btn btn-primary" ng-click="step.place_set_current();">I'm home now!</button>
                     </div>
                   </form>                  
                 </div>
