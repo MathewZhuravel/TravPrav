@@ -502,7 +502,7 @@
               var marker = new google.maps.Marker({
                 position: place.geometry.location,
                 map: map,
-                title: formatted_address
+                title: place.formatted_address
               });
               markers.push(marker);
         
@@ -535,6 +535,8 @@
         }
 
         $scope.a_step = [];
+        $scope.a_step.push(new $scope.cStep());
+        $scope.a_step.push(new $scope.cStep());
         $scope.a_step.push(new $scope.cStep());
         
         $scope.step_array = function() {
