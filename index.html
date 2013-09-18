@@ -93,7 +93,7 @@
         $('#img_User').attr('src', this.imgUrl);
         //$('#a_UserImg').attr('href', this.serviceUrl);
         //$('#a_UserName').attr('href', this.serviceUrl);
-        $('#p_UserName').text(this.displayName);
+        $('#s_UserName').text(this.displayName);
         $('#a_UserSn').text('Go to ' + this.serviceName + ' profile');
         $('#a_UserSn').attr('href', this.serviceUrl);
         $('#div_User').show();
@@ -661,15 +661,17 @@
           </ul>
         </div>
 
-        <div id="div_User" class="dropdown open" style="display:none;">
+        <div id="div_User" class="dropdown" style="display:none;">
           <!--
           <a id="a_UserImg" target="_blank"><img id="img_User" src="" width="30" height="30"></a>
           <a id="a_UserName" target="_blank"></a>
           <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-circle-arrow-down"></span></a>&nbsp
           -->
 
-          <a data-toggle="dropdown" role="button" href="#"><img id="img_User" src="" width="30" height="30">
-            <b id="p_UserName"></b>" "<b class="caret"></b>
+          <a data-toggle="dropdown" role="button" href="#">
+            <img id="img_User" src="" width="30" height="30">
+            <span id="s_UserName"></span>
+            <b class="caret"></b>
           </a>&nbsp
 
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_label">
