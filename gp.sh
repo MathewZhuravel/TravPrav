@@ -1,6 +1,6 @@
 #!/bin/sh
 git add .
-git commit -m '3 steps'
+git commit -m 'tooltip'
 git push -u origin develop
 git checkout master
 git merge develop
