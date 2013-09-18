@@ -91,9 +91,9 @@
         $('#div_Login').hide();
         // $('#img_User').show();
         $('#img_User').attr('src', this.imgUrl);
-        $('#a_UserImg').attr('href', this.serviceUrl);
-        $('#a_UserName').attr('href', this.serviceUrl);
-        $('#a_UserName').text(this.displayName);
+        //$('#a_UserImg').attr('href', this.serviceUrl);
+        //$('#a_UserName').attr('href', this.serviceUrl);
+        $('#p_UserName').text(this.displayName);
         $('#a_UserSn').text('Go to ' + this.serviceName + ' profile');
         $('#a_UserSn').attr('href', this.serviceUrl);
         $('#div_User').show();
@@ -628,8 +628,9 @@
   <div>
   <div id="div_Header" class="Header">
       Headr!!
-      
+
       <div style="float:right;">
+
         <div id="div_Login" class="dropdown">
           <a data-toggle="dropdown" href="#">Login</a>&nbsp
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_logins">
@@ -660,11 +661,15 @@
           </ul>
         </div>
 
-
         <div id="div_User" class="dropdown" style="display:none;">
+          <!--
           <a id="a_UserImg" target="_blank"><img id="img_User" src="" width="30" height="30"></a>
           <a id="a_UserName" target="_blank"></a>
           <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-circle-arrow-down"></span></a>&nbsp
+          -->
+
+          <a id="a_UserName" data-toggle="dropdown" role="button" href="#"><img id="img_User" src="" width="30" height="30"></a>&nbsp
+
           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user_label">
             <li role="presentation"><a id="a_UserSn" href="#">Go to profile</a></li>
             <li role="presentation" class="divider"></li>
@@ -672,7 +677,6 @@
           </ul>
         </div>
       </div>
-      
 
   </div>
 
